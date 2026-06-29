@@ -62,6 +62,27 @@
       <p id="errorBox" class="mt-4 text-sm text-red-600 hidden"></p>
     </div>
 
+    <!-- Monthly summary card -->
+    <div class="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
+      <div class="flex justify-between items-center mb-5">
+        <h2 class="text-lg font-bold text-slate-800">This Month</h2>
+        <span id="summaryMonthLabel" class="text-xs text-slate-400 font-medium"></span>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+          <p class="text-xs font-medium text-emerald-700 mb-1">Received</p>
+          <p id="summaryReceivedAmount" class="text-2xl font-bold text-emerald-700">R 0.00</p>
+          <p id="summaryReceivedCount" class="text-xs text-emerald-600 mt-1">0 transactions</p>
+        </div>
+        <div class="bg-slate-100 border border-slate-200 rounded-xl p-4">
+          <p class="text-xs font-medium text-slate-500 mb-1">Didn't go through</p>
+          <p id="summaryExpiredAmount" class="text-2xl font-bold text-slate-500">R 0.00</p>
+          <p id="summaryExpiredCount" class="text-xs text-slate-400 mt-1">0 expired</p>
+        </div>
+      </div>
+    </div>
+
     <!-- Transaction history card -->
     <div class="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
       <div class="flex justify-between items-center mb-4">
@@ -116,6 +137,12 @@
   const historyTableWrap = document.getElementById("historyTableWrap");
   const historyTableBody = document.getElementById("historyTableBody");
 
+  const summaryMonthLabel = document.getElementById("summaryMonthLabel");
+  const summaryReceivedAmount = document.getElementById("summaryReceivedAmount");
+  const summaryReceivedCount = document.getElementById("summaryReceivedCount");
+  const summaryExpiredAmount = document.getElementById("summaryExpiredAmount");
+  const summaryExpiredCount = document.getElementById("summaryExpiredCount");
+
   let currentMerchantId = null;
 
   // --- Status badge styling, kept in one place so new statuses are easy to add ---
@@ -138,6 +165,31 @@
 
   function formatAmount(amount) {
     return "R " + Number(amount).toLocaleString("en-ZA", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  // --- Compute "this month" totals via the server-side aggregate function ---
+  // This calls get_monthly_summary(), which sums/counts directly in
+  // Postgres — accurate no matter how many transactions exist, unlike
+  // summarizing whatever page of rows happens to be loaded client-side.
+  async function loadMonthlySummary() {
+    summaryMonthLabel.textContent = new Date().toLocaleDateString("en-ZA", { month: "long", year: "numeric" });
+
+    const { data, error } = await supabaseClient
+      .rpc("get_monthly_summary", { p_merchant_id: currentMerchantId });
+
+    if (error || !data || data.length === 0) {
+      summaryReceivedAmount.textContent = "—";
+      summaryExpiredAmount.textContent = "—";
+      return;
+    }
+
+    const row = data[0];
+
+    summaryReceivedAmount.textContent = formatAmount(row.paid_total);
+    summaryReceivedCount.textContent = `${row.paid_count} transaction${row.paid_count === 1 ? "" : "s"}`;
+
+    summaryExpiredAmount.textContent = formatAmount(row.expired_total);
+    summaryExpiredCount.textContent = `${row.expired_count} expired`;
   }
 
   // --- Load transaction history for the logged-in merchant ---
@@ -209,6 +261,7 @@
     dashboardView.classList.remove("hidden");
 
     loadHistory();
+    loadMonthlySummary();
   }
 
   // --- Login ---
@@ -282,11 +335,15 @@
     sessionIdDisplay.textContent = `Session ID: ${data.id} · Checkout: ${checkoutUrl}`;
     statusBox.classList.remove("hidden");
 
-    // Refresh history so the new session shows up immediately
+    // Refresh history and the monthly summary so the new session shows up immediately
     loadHistory();
+    loadMonthlySummary();
   });
 
-  refreshHistoryBtn.addEventListener("click", loadHistory);
+  refreshHistoryBtn.addEventListener("click", () => {
+    loadHistory();
+    loadMonthlySummary();
+  });
 
   checkSession();
 </script>
