@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>A-Pay — Tap to pay, anywhere</title>
+<title>A-Payyy — Tap to pay, anywhere</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -238,7 +238,7 @@
 <body>
 
 <nav>
-  <div class="brand"><span class="dot"></span>A-Pay</div>
+  <div class="brand"><span class="dot"></span>A-Payy</div>
   <a class="nav-cta" href="dashboard.html">Merchant login</a>
 </nav>
 
@@ -246,7 +246,7 @@
   <div>
     <div class="eyebrow">Tap-to-pay infrastructure</div>
     <h1>One tap.<br>Money where it<br>belongs, <em>instantly</em>.</h1>
-    <p class="lede">A-Pay turns any NFC card or link into a live checkout. A customer taps, pays, and the funds split automatically — straight to the right account, every time.</p>
+    <p class="lede">A-Payy turns any NFC card or link into a live checkout. A customer taps, pays, and the funds split automatically — straight to the right account, every time.</p>
     <div class="hero-actions">
       <a class="btn-primary" href="dashboard.html">Open merchant dashboard</a>
       <a class="btn-secondary" href="#how">See how it works →</a>
@@ -296,7 +296,7 @@
     <div class="split-copy">
       <div class="eyebrow">Built as an orchestrator, not a custodian</div>
       <h2 style="margin-bottom: 18px;">Your money never sits with us</h2>
-      <p>A-Pay doesn't hold funds between a payment and a payout. Every transaction is split at the source — the merchant's share routes directly to their own account, and the platform's fee is taken at the same instant.</p>
+      <p>A-Payy doesn't hold funds between a payment and a payout. Every transaction is split at the source — the merchant's share routes directly to their own account, and the platform's fee is taken at the same instant.</p>
       <p><strong>That means no float, no settlement lag, and no question of where the money is</strong> while it's in transit.</p>
     </div>
     <div class="ledger" role="img" aria-label="Example split of a R250 transaction on the revenue-share plan">
@@ -309,7 +309,7 @@
         <span class="value">R 8.25</span>
       </div>
       <div class="ledger-row">
-        <span class="label">A-Pay fee (3%)</span>
+        <span class="label">A-Payy fee (3%)</span>
         <span class="value">R 7.50</span>
       </div>
       <div class="ledger-row total">
@@ -324,7 +324,7 @@
   <div class="block-head">
     <div class="eyebrow">Pricing</div>
     <h2>Pick the model that fits your volume</h2>
-    <p>Two ways to pay for A-Pay itself. Either way, Paystack's own processing fee is separate and goes straight to Paystack — A-Pay never touches it.</p>
+    <p>Two ways to pay for A-Payy itself. Either way, Paystack's own processing fee is separate and goes straight to Paystack — A-Payy never touches it.</p>
   </div>
 
   <div class="flow" style="grid-template-columns: 1fr 1fr;">
@@ -336,14 +336,14 @@
     <div class="flow-step">
       <div class="flow-num">REVENUE SHARE</div>
       <h3>3%<span style="font-size:14px; color:var(--lavender); font-weight:500;"> / transaction</span></h3>
-      <p style="margin-top:10px;">No monthly fee. A-Pay takes 3% of each sale, on top of Paystack's own processing fee.</p>
+      <p style="margin-top:10px;">No monthly fee. A-Payy takes 3% of each sale, on top of Paystack's own processing fee.</p>
     </div>
   </div>
 
   <div class="split-row" style="margin-top:48px; align-items:start;">
     <div class="split-copy">
       <h3 style="font-family:'Space Grotesk',sans-serif; font-size:19px; font-weight:600; margin-bottom:14px;">Try it: see exactly what lands in your account</h3>
-      <p>Paystack's local card rate is <strong>2.9% + R1</strong> (excl. VAT) — that's fixed by Paystack and goes straight to them, not A-Pay. Enter a sale amount and pick your plan to see the full breakdown.</p>
+      <p>Paystack's local card rate is <strong>2.9% + R1</strong> (excl. VAT) — that's fixed by Paystack and goes straight to them, not A-Payy. Enter a sale amount and pick your plan to see the full breakdown.</p>
       <p style="font-size:13px; color:var(--lavender); opacity:0.85;">VAT may apply on top of Paystack's fee per their terms — this calculator shows the rate excluding VAT, in line with how Paystack quotes it.</p>
     </div>
 
@@ -365,7 +365,7 @@
         <span class="value" id="outGross">R 250.00</span>
       </div>
       <div class="ledger-row">
-        <span class="label" id="outApayLabel">A-Pay fee</span>
+        <span class="label" id="outApayLabel">A-Payy fee</span>
         <span class="value" id="outApay">R 0.00</span>
       </div>
       <div class="ledger-row">
@@ -416,7 +416,7 @@
     // Paystack's published local rate: 2.9% + R1, excl. VAT
     const paystackFee = amount * 0.029 + 1;
 
-    // A-Pay's own fee, calculated on the full sale amount
+    // A-Payy's own fee, calculated on the full sale amount
     const apayFee = plan === 'share' ? amount * 0.03 : 0;
 
     const net = amount - paystackFee - apayFee;
@@ -426,7 +426,7 @@
     outApay.textContent = fmt(apayFee);
     outNet.textContent = fmt(net);
 
-    outApayLabel.textContent = plan === 'share' ? 'A-Pay fee (3%)' : 'A-Pay fee';
+    outApayLabel.textContent = plan === 'share' ? 'A-Payy fee (3%)' : 'A-Payy fee';
     outFlatNote.style.display = plan === 'flat' ? 'block' : 'none';
   }
 
@@ -453,7 +453,7 @@
 </section>
 
 <footer>
-  <span>A-Pay · part of Aethelwine Homes</span>
+  <span>A-Payy · part of Aethelwine Homes</span>
   <span>Built on Paystack split payments</span>
 </footer>
 
